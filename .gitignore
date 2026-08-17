@@ -1,0 +1,9 @@
+# Everything the user generates stays local. Never commit personal game data.
+data/*
+!data/.gitkeep
+config.json
+*.pyc
+__pycache__/
+.venv/
+venv/
+.DS_Store
