@@ -237,6 +237,16 @@ The coaching half is not code at all. It lives in `AGENTS.md`, which every agent
 reads: what it may claim, what it must defer to the engine on, how to teach, and
 when a mistake becomes a pattern.
 
+## How this was built
+
+The design is mine: the split between engine and model, the rule that the agent may never
+present its own evaluation as fact, the three-game threshold for writing down a pattern, and
+the decision to treat time per move as evidence rather than trivia.
+
+A significant part of the code was written by coding agents against those specifications —
+which is also why `AGENTS.md` and `CLAUDE.md` sit in the repository root. They are not
+leftovers; they are the interface the tool is built around.
+
 ## License
 
 MIT

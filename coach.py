@@ -15,6 +15,7 @@ import json
 import re
 import shutil
 import sys
+from pathlib import Path
 
 import chess.pgn
 
@@ -120,6 +121,12 @@ def cmd_setup(args: argparse.Namespace) -> int:
         break
 
     print("\nStep 2 of 3 - the engine\n")
+    if args.engine and not Path(args.engine).is_file():
+        print("  No Stockfish executable at: " + args.engine)
+        print()
+        print("Setup stopped. Check the path passed to --engine.")
+        return 1
+
     try:
         engine_path = eng.find_engine(args.engine)
     except eng.EngineNotFound as error:
@@ -270,11 +277,7 @@ def cmd_analyze(args: argparse.Namespace) -> int:
 # --------------------------------------------------------------------------
 
 def cmd_status(_: argparse.Namespace) -> int:
-    try:
-        configuration = cfg.Config.load()
-    except FileNotFoundError as error:
-        print(error)
-        return 1
+    configuration = cfg.Config.load()
     games = sorted(cfg.GAMES.glob("*.pgn"))
     reports = sorted(cfg.REPORTS.glob("*.md"))
     print(BANNER)
@@ -314,6 +317,9 @@ def main() -> int:
     args = parser.parse_args()
     try:
         return args.func(args)
+    except FileNotFoundError as error:
+        print(error)
+        return 1
     except KeyboardInterrupt:
         print("\nCancelled.")
         return 130
